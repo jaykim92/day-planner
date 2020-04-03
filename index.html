@@ -43,11 +43,13 @@
         const date = moment().format("MMMM Do YYYY");
         $("#currentDay").text(date);
 
-        // get the time to be used as a reference for classes: past, present, and future
+        // get the hour for the current time to be used as a reference for classes: past, present, and future
         const hour = moment().format('H');
+        // create an object to refer to a ternary statement
+        // if there is anything already in the to-do list with the key, "todos", then parse the JSON file and get the information in our local storage
         const todo = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : {}
 
-        for (var h = 9; h < 18; h++) {
+        for (var h = 9; h < 19; h++) {
             // make a row for each hour from 9am to 6pm
             var rowDiv = $("<div>"); 
             rowDiv.addClass("row");
@@ -60,33 +62,42 @@
                 // else means it's past 1pm or later, which means we need to do the military time - 12 hours and concatonate pm
                 hourEl.addClass("col-md-2 hour").text( h<12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`);
 
-                // add rows to the time-block container
+                // add the textarea tag to the time-block container
+                // textarea allows for editable textboxes automatically on click
                 var textInput = $("<textarea>");
                 // use ternary statements for color coding past, present, and future text areas
+                //if the iterator value is smaller than the value for the current time, then we give it the class "past"
+                // if the iterator value is equal to the value of the current time, we give it the class "present"
+                // if all else, or in other words, the iterator value is larger than the value of the current hour, it is given the class "future"
                 textInput.addClass(`col-md-8 ${h<hour ? "past" : h === hour ? "present" : "future"}`);
+                // give the class an id equal to the iterator from 9:00 to 18:00 military time
                 textInput.attr('id', h);
                 textInput.text(todo[h])
                 //make a save button for each row
                 var saveBtn = $("<button>");
                 saveBtn.addClass("col-md-2 saveBtn");
+                // on click event, run an anonymous function to set the user's input to local storage
                 saveBtn.on("click", function(){
-                  console.log('clicked!')
+                  // create a variable to hold the value of user's text input
                   var toDoItem = $(this).siblings("textarea").val();
+                  // create another variable to hold the text user input area 
                   var key = $(this).siblings("textarea").attr('id');
                   todo[key] = toDoItem;
                   localStorage.setItem('todos', JSON.stringify(todo));
                 })
+
+                // add the icon into the save button container
+                var icon = $("<i class='far fa-save'></i>");
+                saveBtn.append(icon);
 
                 // append to html to print on the page
                 $(".container").append(rowDiv);
                 rowDiv.append(hourEl);
                 rowDiv.append(textInput);
                 rowDiv.append(saveBtn);
+                
         }
 
-        // upon clock of any given time block, you can edit text that will save in local storage when save button is pressed
-
-        // get items from local storage so that they stay even when the page is refreshed
         });
 
     </script>
