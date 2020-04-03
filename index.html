@@ -46,8 +46,10 @@
         // get the hour for the current time to be used as a reference for classes: past, present, and future
         const hour = moment().format('H');
         // create an object to refer to a ternary statement
-        // if there is anything already in the to-do list with the key, "todos", then parse the JSON file and get the information in our local storage
+        // if there is anything already in the to-do list with the key, "todos", then parse the JSON file and get the information in our local storage. without parse, we cannot get any of the items because it is currently a string by default
         const todo = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : {}
+
+        // try creating a for loop here
 
         for (var h = 9; h < 19; h++) {
             // make a row for each hour from 9am to 6pm
@@ -80,9 +82,11 @@
                 saveBtn.on("click", function(){
                   // create a variable to hold the value of user's text input
                   var toDoItem = $(this).siblings("textarea").val();
-                  // create another variable to hold the text user input area 
+                  // create another variable to hold the value of the id, which is the same value as h, so that within the array we know which row we are in
                   var key = $(this).siblings("textarea").attr('id');
+                  // set the inputted plan for each row to go into the array with the corresponding key, aka h
                   todo[key] = toDoItem;
+                  // set the item into local storage so that it stays even after refresh and stringify the array because it cannot local storage while parsed
                   localStorage.setItem('todos', JSON.stringify(todo));
                 })
 
@@ -99,6 +103,7 @@
         }
 
         });
+
 
     </script>
   </body>
