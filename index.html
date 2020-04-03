@@ -62,7 +62,7 @@
                 //check if the statement "hour is less than 12" is truthy, if so, return the hour and concatonate with am
                 // else if "h is 12" is truthy, then return exactly 12 pm
                 // else means it's past 1pm or later, which means we need to do the military time - 12 hours and concatonate pm
-                hourEl.addClass("col-md-2 hour").text( h<12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`);
+                hourEl.addClass("col-md-1 hour").text( h<12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`);
 
                 // add the textarea tag to the time-block container
                 // textarea allows for editable textboxes automatically on click
@@ -71,13 +71,13 @@
                 //if the iterator value is smaller than the value for the current time, then we give it the class "past"
                 // if the iterator value is equal to the value of the current time, we give it the class "present"
                 // if all else, or in other words, the iterator value is larger than the value of the current hour, it is given the class "future"
-                textInput.addClass(`col-md-8 ${h<hour ? "past" : h === hour ? "present" : "future"}`);
+                textInput.addClass(`col-md-10 ${h<hour ? "past" : h === hour ? "present" : "future"}`);
                 // give the class an id equal to the iterator from 9:00 to 18:00 military time
                 textInput.attr('id', h);
                 textInput.text(todo[h])
                 //make a save button for each row
                 var saveBtn = $("<button>");
-                saveBtn.addClass("col-md-2 saveBtn");
+                saveBtn.addClass("col-md-1 saveBtn");
                 // on click event, run an anonymous function to set the user's input to local storage
                 saveBtn.on("click", function(){
                   // create a variable to hold the value of user's text input
@@ -101,6 +101,22 @@
                 rowDiv.append(saveBtn);
                 
         }
+
+        // BONUS CHALLENGE FOR SELF: clear schedule
+        var clearRowDiv = $("<div>").addClass("row justify-content-center");
+        //create a variable to hold button so we can append it later
+        var clearBtn = $("<button>").text("Clear Schedule");
+        //append to html to display on page
+        $(".container").append(clearRowDiv);
+        clearRowDiv.append(clearBtn);
+
+        // on click, run the an anonymous function to clear the local storage
+        clearBtn.on("click", function() {
+          localStorage.clear();
+          // refresh the rows to be blank
+          $("textarea").text("");
+        })
+
 
         });
 
